@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
+/* Thème global rouge & blanc – adapté au mobile */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #330000;
 }
 
 @theme inline {
@@ -12,15 +13,641 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    #ffb3b3,
+    #ffe6e6,
+    #ffffff,
+    #ffe6e6,
+    #fe6464,
+    #ffcccc,
+    #ffffff
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 12s ease infinite;
+  color: var(--foreground);
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Cartes blanches arrondies + ombre douce */
+.romantic-card {
+  @apply bg-white/95 rounded-3xl shadow-lg shadow-red-200 backdrop-blur-sm;
+}
+
+/* Titres élégants */
+.romantic-title {
+  @apply text-2xl font-semibold tracking-tight text-[#b30000];
+}
+
+.romantic-subtitle {
+  @apply text-sm text-[#661111]/90;
+}
+
+/* Boutons larges adaptés mobile */
+.romantic-button {
+  @apply w-full py-3.5 rounded-full text-center font-semibold text-white bg-[#ff1a1a] 
+  hover:bg-[#b30000] active:scale-95 transition-all duration-200 shadow-md shadow-red-200;
+}
+
+.romantic-button-secondary {
+  @apply w-full py-3.5 rounded-full text-center font-semibold text-[#b30000] bg-white/95 
+  border border-red-200 hover:bg-red-50 active:scale-95 transition-all duration-200;
+}
+
+/* Première page "Commencer" – carte avec image roses qui couvre toute la carte */
+.start-page-card {
+  position: relative;
+}
+.start-page-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 230, 230, 0.35) 50%,
+    rgba(255, 200, 200, 0.3) 100%
+  );
+  pointer-events: none;
+}
+.start-page-card__content {
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+/* Petite carte "Nwantiti playing" – apparaît puis disparaît (page 1) */
+.music-now-playing-card {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(179, 0, 0, 0.2);
+  font-size: 0.8rem;
+  color: #661111;
+  z-index: 30;
+  opacity: 0;
+  animation: music-card-in 0.5s ease-out forwards;
+}
+.music-now-playing-card--out {
+  animation: music-card-out 0.5s ease-in forwards;
+}
+@keyframes music-card-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes music-card-out {
+  from {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+}
+
+/* Animations clés */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Effets d'anneaux qui explosent autour du cœur (inspiré du CodePen) */
+@keyframes explode {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes explodeSmall {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Cœur qui s’agrandit au clic (comportement CodePen) */
+@keyframes open {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(10);
+  }
+}
+
+/* Texte de fin qui apparaît */
+@keyframes show {
+  from {
+    opacity: 0;
+    top: -100px;
+  }
+  to {
+    opacity: 1;
+    top: 0;
+  }
+}
+
+.heart-ico {
+  transform-origin: center center;
+}
+.heart-ico.heart-ico--visible {
+  animation: heart-appear 0.6s ease-out forwards;
+}
+.heart-ico.heart-ico--beating {
+  animation: heartbeat 0.9s ease-in-out infinite;
+}
+.heart-ico.open {
+  animation: open 0.5s ease-out forwards;
+}
+@keyframes heart-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.08); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.06); }
+  56% { transform: scale(1); }
+  70%, 100% { transform: scale(1); }
+}
+
+.endtext {
+  opacity: 0;
+  top: -80px;
+  transition: none;
+}
+.endtext.open {
+  top: 0;
+  opacity: 1;
+  animation: show 0.6s ease-out forwards;
+  pointer-events: auto;
+}
+
+@keyframes gentle-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Utilitaires d'animation réutilisables */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-gentle-pulse {
+  animation: gentle-pulse 1.8s ease-in-out infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+/* Pour les sections qui apparaissent au scroll (voir composant dédié) */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.reveal-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Confetti au clic OUI : montent puis retombent vers le bas */
+@keyframes confetti-burst-up {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.4) rotate(0deg);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(-45vh) translateX(var(--drift)) scale(1) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--drift)) scale(0.7) rotate(720deg);
+    opacity: 0.4;
+  }
+}
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: confetti-burst-up var(--duration) ease-in-out forwards;
+  animation-delay: var(--delay);
+  transform-origin: center center;
+}
+
+/* Carte Saint-Valentin – fermée = cœurs empilés au centre, ouverte = cœurs sur les côtés, composant agrandi */
+.valentine-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -230px;
+  margin-top: -130px;
+  width: 460px;
+  height: 260px;
+  box-sizing: border-box;
+  transform: scale(1.5);
+  transform-origin: center center;
+}
+.valentine-card .heart {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  top: 0;
+  float: none;
+}
+/* Demi-cœur : cercle (bosse) + rectangle arrondi (pointe) – flux comme l’original */
+.valentine-card .heart .half2 {
+  transform: rotate(-90deg);
+  margin-top: -330px;
+  margin-left: -200px;
+}
+.valentine-card .heart .circle {
+  height: 130px;
+  width: 130px;
+  border-radius: 50%;
+  background-color: #d32f2f;
+}
+.valentine-card .heart .rec {
+  margin-top: -60px;
+  width: 130px;
+  height: 130px;
+  background-color: #d32f2f;
+  border-radius: 35% 0 0 0;
+}
+/* Cœur droit : même forme en blanc */
+.valentine-card .heart.heart-right {
+  margin-top: -60px;
+}
+.valentine-card .heart.heart-right .circle,
+.valentine-card .heart.heart-right .rec {
+  background-color: #fff;
+}
+.valentine-card .heart.heart-right .half2 .rec {
+  border-bottom: 1px solid #eee;
+  margin-top: -61px;
+}
+.valentine-card .valentine-message {
+  position: absolute;
+  left: 130px;
+  top: 30px;
+  width: 200px;
+  height: 200px;
+  background-color: #333;
+  border-radius: 35% 0 35% 0;
+  text-align: center;
+  overflow: hidden;
+  z-index: 0;
+}
+.valentine-card .valentine-message h2 {
+  font-size: 20px;
+  color: #fff;
+  width: 160px;
+  margin-top: 60px;
+  margin-left: 16px;
+  margin-bottom: 0;
+}
+.valentine-card .valentine-message video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Charnière au centre : gauche s’ouvre depuis la droite, droite depuis la gauche */
+/* Cœur rouge fermé : pique en bas à gauche (rotateZ(-45deg) oriente la pointe vers le coin bas-gauche) */
+.valentine-card .heart {
+  transition: opacity 0.5s ease-out;
+}
+.valentine-card .heart.heart-left {
+  left: 0;
+  transform: rotateY(180deg) rotateZ(180deg);
+  transform-origin: center center;
+  z-index: 2;
+}
+.valentine-card .heart.heart-right {
+  left: 200px;
+  transform: rotateX(0deg) rotateZ(0deg);
+  transform-origin: center center;
+  z-index: 1;
+}
+/* Mode ouvert sans animation au chargement */
+.valentine-card-open-static .heart.heart-left {
+  animation: none;
+  left: 200px;
+  transform: rotateY(0deg) rotateZ(0deg);
+}
+.valentine-card-open-static .heart.heart-right {
+  animation: none;
+  left: 0;
+  transform: rotateX(0deg) rotateZ(180deg);
+}
+.valentine-card-open:not(.valentine-card-open-static) .heart.heart-left {
+  animation: openLeft 2s ease-in-out forwards;
+}
+.valentine-card-open:not(.valentine-card-open-static) .heart.heart-right {
+  animation: openRight 2s ease-in-out forwards;
+}
+/* Au clic : les deux cœurs disparaissent, la vidéo reste au centre en boucle */
+.valentine-card.hearts-hidden .heart {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Fermé : cœurs viennent au centre et s’empilent (translateX) */
+@keyframes openLeft {
+  from { left: 0; transform: rotateY(180deg) rotateZ(180deg); }
+  to { left: 200px; transform: rotateY(0deg) rotateZ(0deg); }
+}
+@keyframes openRight {
+  from { left: 200px; transform: rotateX(0deg) rotateZ(0deg); }
+  to { left: 0; transform: rotateX(0deg) rotateZ(180deg); }
+}
+
+/* ========== Enveloppe (page message) ========== */
+.envelope-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+.envelope-hint {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #661111;
+  max-width: 320px;
+}
+.envelope {
+  --env-front: #ba9872;
+  --env-border: #967b5c;
+  --env-back: #a38564;
+  --env-sticker-bg: #f9f9f9;
+  --env-sticker-border: #e2e2e2;
+  width: 22rem;
+  height: 15rem;
+  position: relative;
+  margin: auto;
+  perspective: 800px;
+  touch-action: manipulation;
+  overflow: visible;
+  transform: scale(1.35);
+  transform-origin: center center;
+}
+@media (min-width: 400px) and (max-width: 600px) {
+  .envelope {
+    width: 28rem;
+    height: 20rem;
+    transform: scale(1.2);
+  }
+}
+@media (min-width: 600px) {
+  .envelope {
+    width: 32rem;
+    height: 24rem;
+    transform: scale(1.25);
+  }
+}
+.envelope-page.envelope--gone .envelope {
+  transform: translateY(120vh) scale(1.35);
+  transition: transform 0.8s ease-in-out;
+}
+@media (min-width: 400px) and (max-width: 600px) {
+  .envelope-page.envelope--gone .envelope {
+    transform: translateY(120vh) scale(1.2);
+  }
+}
+@media (min-width: 600px) {
+  .envelope-page.envelope--gone .envelope {
+    transform: translateY(120vh) scale(1.25);
+  }
+}
+.envelope__back-paper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  border-radius: 0.7rem;
+  background-color: var(--env-back);
+  clip-path: polygon(0% 0%, 100% 0%, 90% 100%, 0% 90%);
+  z-index: 100;
+}
+.envelope__front-paper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  border-radius: 0.7rem;
+  border: 0.35rem solid var(--env-border);
+  background-color: var(--env-front);
+  clip-path: polygon(100% 0%, 50% 70%, 0% 0%, 0% 100%, 100% 100%);
+  z-index: 300;
+}
+.envelope__up-paper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  border-radius: 0.7rem;
+  background-color: var(--env-border);
+  z-index: 400;
+  clip-path: polygon(0% 0%, 100% 0%, 50% 81%);
+  transition: transform 0.4s ease-out, z-index 0s 0.4s;
+}
+.envelope__up-paper--clickable {
+  cursor: pointer;
+}
+.envelope__up-paper--open {
+  transform: translateY(-100%) rotateX(-180deg);
+  transform-origin: bottom center;
+  z-index: 150;
+  transition: transform 0.5s ease-out;
+}
+.envelope__sticker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28%;
+  width: 100%;
+  height: 22%;
+  z-index: 401;
+  background-color: var(--env-sticker-bg);
+  border: 0.25rem solid var(--env-sticker-border);
+  border-left: none;
+  border-right: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d32f2f'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+  background-size: 1.5rem auto;
+  background-repeat: repeat-x;
+  background-position: center;
+  box-sizing: border-box;
+  transition: transform 0.35s ease-out, opacity 0.25s ease-out;
+}
+.envelope__sticker:hover {
+  opacity: 0.95;
+}
+.envelope__sticker--cut {
+  transform: translateX(-120%) scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (min-width: 600px) {
+  .envelope__sticker {
+    height: 18%;
+    background-size: 2rem auto;
+  }
+}
+.envelope__false-sticker {
+  position: absolute;
+  width: 20%;
+  height: 20%;
+  top: 30%;
+  left: 80%;
+  margin: auto;
+  right: 0;
+  bottom: 0;
+  z-index: 300;
+  background-color: var(--env-sticker-bg);
+  border: 0.3rem solid var(--env-sticker-border);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d32f2f'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+  background-size: 2rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+.envelope__content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 250;
+  overflow: visible;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-out 0.2s;
+}
+.envelope__content--visible {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 350;
+}
+.envelope__letter {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #f9f9f9;
+  border-radius: 0.7rem;
+  overflow: hidden;
+  box-shadow:
+    0 -8px 28px rgba(0,0,0,0.14),
+    0 4px 12px rgba(0,0,0,0.08),
+    inset 0 0 20px rgba(0,0,0,0.04),
+    inset 0 -8px 12px rgba(0,0,0,0.06);
+  transform: translateY(-80%);
+  transform-origin: bottom center;
+}
+.envelope__letter .envelope__video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.envelope-video-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-out;
+}
+.envelope-video-fullscreen.envelope-video-fullscreen--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.envelope-video-fullscreen video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
