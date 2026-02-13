@@ -13,7 +13,7 @@ const INTRO_TEXT =
   "Quand je pense à toi, ce ne sont pas de grands discours —\nce sont des sensations vraies : la douceur, la chaleur, l'envie de prolonger l'instant.\n\n" +
   "Cette expérience est simple.\nMais elle est sincère.\n\n" +
   "Écoute mon cœur qui bat…\nil sait déjà pourquoi.";
-const TYPE_DELAY_MS = 48;
+const TYPE_DELAY_MS = 95;
 const HEART_APPEAR_DELAY_MS = 800;
 const HEARTBEAT_MS = 900;
 
@@ -32,8 +32,8 @@ function playTypingTick(audioContextRef: React.MutableRefObject<AudioContext | n
     gain.connect(ctx.destination);
     osc.type = "sine";
     osc.frequency.setValueAtTime(900, ctx.currentTime);
-    gain.gain.setValueAtTime(0.06, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.025);
+    gain.gain.setValueAtTime(0.02, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02);
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.025);
   } catch {
@@ -75,7 +75,7 @@ export default function Home() {
   }, [hideMusicCard]);
 
   useEffect(() => {
-    if (typedLength > 0 && typedLength < INTRO_TEXT.length) {
+    if (typedLength > 0 && typedLength < INTRO_TEXT.length && typedLength % 3 === 0) {
       playTypingTick(typingAudioContextRef);
     }
   }, [typedLength]);
@@ -106,7 +106,7 @@ export default function Home() {
 
     const playBeat = () => {
       audio.currentTime = 0;
-      audio.play().catch(() => {});
+      audio.play().catch(() => { });
       if (window.navigator.vibrate) window.navigator.vibrate([80, 120, 80, 620]);
     };
     playBeat();
@@ -164,9 +164,6 @@ export default function Home() {
           >
             <div className="start-page-card__overlay" aria-hidden />
             <div className="start-page-card__content relative z-10 flex flex-col items-center gap-6 px-6">
-              <p className="text-[#4a2020]/95 text-sm sm:text-base max-w-xs font-medium drop-shadow-sm">
-                Une carte pour toi…
-              </p>
               <button
                 type="button"
                 onClick={handleStart}
@@ -178,6 +175,9 @@ export default function Home() {
               >
                 Commencer
               </button>
+              <p className="text-[#4a2020]/95 text-sm sm:text-base max-w-xs font-medium drop-shadow-sm">
+                J'espère que ça te plaira... 
+              </p>
             </div>
           </div>
         </div>
@@ -207,25 +207,23 @@ export default function Home() {
           )}
 
           <div
-            className={`relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex items-center justify-center overflow-visible transition-opacity duration-300 ${
-              showHeart ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
+            className={`relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] flex items-center justify-center overflow-visible transition-opacity duration-300 ${showHeart ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
           >
             <button
               type="button"
               onClick={handleHeartClick}
-              className={`heart-ico block w-full h-full rounded-full relative focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 overflow-visible ${
-            showHeart ? "heart-ico--visible" : ""
-          } ${heartBeating && !isOpen ? "heart-ico--beating" : ""} ${isOpen ? "open pointer-events-none" : ""}`}
+              className={`heart-ico block w-full h-full rounded-full relative focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 overflow-visible ${showHeart ? "heart-ico--visible" : ""
+                } ${heartBeating && !isOpen ? "heart-ico--beating" : ""} ${isOpen ? "open pointer-events-none" : ""}`}
               style={{
-            background: "linear-gradient(135deg, #ff4081 0%, #e91e63 50%, #b30000 100%)",
-            boxShadow: "0 10px 40px rgba(180,0,0,0.4)",
+                background: "linear-gradient(135deg, #ff4081 0%, #e91e63 50%, #b30000 100%)",
+                boxShadow: "0 10px 40px rgba(180,0,0,0.4)",
                 transformOrigin: "center center",
               }}
             >
               <span
                 className="absolute inset-0 flex items-center justify-center text-[100px] sm:text-[120px] text-white drop-shadow-[2px_4px_8px_rgba(0,0,0,0.3)]"
-            aria-hidden="true"
+                aria-hidden="true"
               >
                 ♥
               </span>

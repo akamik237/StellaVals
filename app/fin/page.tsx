@@ -8,7 +8,7 @@ import { HeartLoader } from "@/components/HeartLoader";
 export default function FinPage() {
   return (
     <div className="space-y-8 text-center">
-      <HeartLoader label="" />
+      <HeartLoader label="" withSound />
 
       <div>
         <p className="text-xl font-semibold text-[#b30000] mb-6">
@@ -19,19 +19,18 @@ export default function FinPage() {
         </Link>
       </div>
 
-      <div className="romantic-card p-5 text-left">
+      <div className="romantic-card p-5 text-center">
         <h2 className="text-lg font-semibold text-[#b30000] mb-3">
           Mot de ton ingénieur ❤️‍🔥
         </h2>
         <p className="text-sm text-[#661111]/90 leading-relaxed mb-3">
-          Site conçu, compilé et déployé avec précision par ton ingénieur du cœur.
-          Architecture stable, performance émotionnelle élevée,
-          compatibilité totale avec ton sourire.
-          Certaines fonctionnalités sont confidentielles…
-          et se débloqueront en tête-à-tête 😌🔥
+          Pensé avec le cœur, assemblé avec soin, et déployé avec intention par ton ingénieur du cœur.
+          Structure fiable, logique amoureuse, compatibilité parfaite avec ton sourire.
+          Certaines fonctionnalités restent protégées…
+          et ne s&apos;activent qu&apos;en proximité certifiée 😌🔥
         </p>
         <p className="text-xs text-[#661111]/70">
-          Build : HeartEngine v1.3 — sécurisé, chiffré, dangereusement attiré par toi.
+          Build : HeartEngine v1.3 — chiffré, stable, et irrésistiblement attiré par toi.
         </p>
       </div>
     </div>
