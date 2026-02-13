@@ -536,21 +536,22 @@ body {
   --env-back: #a38564;
   --env-sticker-bg: #f9f9f9;
   --env-sticker-border: #e2e2e2;
-  width: 22rem;
-  height: 15rem;
+  width: 18rem;
+  height: 12rem;
   position: relative;
   margin: auto;
-  perspective: 800px;
+  perspective: 900px;
+  transform-style: preserve-3d;
   touch-action: manipulation;
   overflow: visible;
-  transform: scale(1.35);
+  transform: scale(1);
   transform-origin: center center;
 }
 @media (min-width: 400px) and (max-width: 600px) {
   .envelope {
-    width: 28rem;
-    height: 20rem;
-    transform: scale(1.2);
+    width: 22rem;
+    height: 15rem;
+    transform: scale(1.05);
   }
 }
 @media (min-width: 600px) {
@@ -561,12 +562,12 @@ body {
   }
 }
 .envelope-page.envelope--gone .envelope {
-  transform: translateY(120vh) scale(1.35);
+  transform: translateY(120vh) scale(1);
   transition: transform 0.8s ease-in-out;
 }
 @media (min-width: 400px) and (max-width: 600px) {
   .envelope-page.envelope--gone .envelope {
-    transform: translateY(120vh) scale(1.2);
+    transform: translateY(120vh) scale(1.05);
   }
 }
 @media (min-width: 600px) {
@@ -607,16 +608,19 @@ body {
   background-color: var(--env-border);
   z-index: 400;
   clip-path: polygon(0% 0%, 100% 0%, 50% 81%);
-  transition: transform 0.4s ease-out, z-index 0s 0.4s;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), z-index 0s 0.4s;
 }
 .envelope__up-paper--clickable {
   cursor: pointer;
 }
 .envelope__up-paper--open {
-  transform: translateY(-100%) rotateX(-180deg);
+  transform: translateY(-98%) rotateX(-172deg);
   transform-origin: bottom center;
   z-index: 150;
-  transition: transform 0.5s ease-out;
+  transition: transform 0.7s cubic-bezier(0.34, 1.1, 0.64, 1);
 }
 .envelope__sticker {
   position: absolute;
@@ -685,7 +689,7 @@ body {
   overflow: visible;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease-out 0.2s;
+  transition: opacity 0.5s ease-out 0.35s;
 }
 .envelope__content--visible {
   opacity: 1;

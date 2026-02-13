@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 
 const INTRO_TEXT =
   "Si tu lis ces mots, c'est que tu occupes déjà une place rare dans mes pensées.\n\n" +
-  "Certaines personnes croisent nos chemins,\nd'autres transforment doucement nos journées.\n" +
-  "Toi, tu apportes une clarté calme —\ndiscrète, naturelle, mais profondément ressentie.\n\n" +
-  "Ta présence apaise, ton énergie réchauffe,\net ton sourire fait tomber les défenses sans prévenir.\n\n" +
+  "Certaines personnes croisent nos chemins,\nd'autres transforment doucement mes journées.\n" +
+  "Toi, tu m'apportes une clarté calme —\ndiscrète, naturelle, et qui me touche.\n\n" +
+  "Ta présence m'apaise. Ton énergie me réchauffe.\nTon sourire fait tomber mes défenses sans que je m'y attende.\n\n" +
   "Quand je pense à toi, ce ne sont pas de grands discours —\nce sont des sensations vraies : la douceur, la chaleur, l'envie de prolonger l'instant.\n\n" +
   "Cette expérience est simple.\nMais elle est sincère.\n\n" +
   "Écoute mon cœur qui bat…\nil sait déjà pourquoi.";
@@ -151,7 +151,7 @@ export default function Home() {
   const displayedIntro = INTRO_TEXT.slice(0, typedLength);
 
   return (
-    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center overflow-visible px-4 relative">
+    <div className="min-h-[80vh] flex flex-col items-center justify-center text-center overflow-visible px-1 relative">
       {!hasStarted ? (
         <div className="w-full flex flex-col items-center justify-center px-1 py-2">
           <div
