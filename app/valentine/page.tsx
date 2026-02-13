@@ -16,7 +16,8 @@ const SOUVENIRS_QUALITES = `Entre les trajets de 45 minutes et les raccompagneme
 const EMOTION = "Tu as pris les droits administrateur sur mon système émotionnel.";
 
 const CONFETTI_COLORS = ["#b30000", "#ff1a1a", "#ff4081", "#ff69b4", "#ffffff", "#ffd700", "#ffe6e6"];
-const CONFETTI_COUNT = 80;
+const EXPLOSION_CONFETTI_COUNT = 2100;
+const REDIRECT_AFTER_EXPLOSION_MS = 5200;
 
 type ConfettiPiece = {
   id: number;
@@ -33,28 +34,27 @@ type ConfettiPiece = {
   size: number;
 };
 
-function generateConfettiPieces(buttonRect: DOMRect): ConfettiPiece[] {
-  const cx = buttonRect.left + buttonRect.width / 2;
-  const cy = buttonRect.top + buttonRect.height / 2;
-  return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
-    const angleDeg = -80 + Math.random() * 50;
-    const angleRad = (angleDeg * Math.PI) / 180;
-    const velocity = 70 + Math.random() * 90;
-    const dx = velocity * Math.cos(angleRad);
-    const dy = -velocity * Math.sin(angleRad);
+function generateExplosionConfetti(): ConfettiPiece[] {
+  const w = typeof window !== "undefined" ? window.innerWidth : 400;
+  const h = typeof window !== "undefined" ? window.innerHeight : 600;
+  const cx = w / 2;
+  const originY = h - 30;
+  return Array.from({ length: EXPLOSION_CONFETTI_COUNT }, (_, i) => {
+    const dx = (Math.random() - 0.5) * 160;
+    const dy = -(650 + Math.random() * 500);
     return {
       id: i,
-      originX: cx,
-      originY: cy,
-      delay: Math.random() * 0.08,
-      duration: 1.4 + Math.random() * 0.6,
+      originX: cx + (Math.random() - 0.5) * 60,
+      originY,
+      delay: Math.random() * 0.4,
+      duration: 2.8 + Math.random() * 1.6,
       dx,
       dy,
-      drift: (Math.random() - 0.5) * 120,
-      fall: 120 + Math.random() * 120,
-      rotation: (Math.random() - 0.5) * 1440,
+      drift: (Math.random() - 0.5) * 380,
+      fall: 200 + Math.random() * 350,
+      rotation: (Math.random() - 0.5) * 1800,
       color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-      size: 4 + Math.floor(Math.random() * 4),
+      size: 5 + Math.floor(Math.random() * 6),
     };
   });
 }
@@ -77,21 +77,20 @@ export default function ValentinePage() {
   const handleOuiClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
-      const rect = ouiRef.current?.getBoundingClientRect();
-      if (rect) setConfettiPieces(generateConfettiPieces(rect));
+      setConfettiPieces(generateExplosionConfetti());
       if (typeof window !== "undefined" && "vibrate" in window.navigator) {
-        window.navigator.vibrate([50, 30, 50]);
+        window.navigator.vibrate([50, 30, 80]);
       }
-      setTimeout(() => router.push("/programme"), 2600);
+      setTimeout(() => router.push("/programme"), REDIRECT_AFTER_EXPLOSION_MS);
     },
     [router]
   );
 
   return (
     <div className="space-y-6 text-center relative">
-      {/* Confetti cannon burst au clic OUI */}
+      {/* Confetti : du bas vers le haut, très haut */}
       {confettiPieces.length > 0 && (
-        <div className="fixed inset-0 z-50 pointer-events-none" aria-hidden="true">
+        <div className="fixed inset-0 z-[60] pointer-events-none" aria-hidden="true">
           {confettiPieces.map((p) => (
             <div
               key={p.id}
