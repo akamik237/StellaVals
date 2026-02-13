@@ -84,15 +84,17 @@ export default function MessagePage() {
     setLoopCount((c) => c + 1);
   }, []);
 
+  const loopsBeforeFin = isMobile ? 2 : LOOPS_BEFORE_FIN;
+
   useEffect(() => {
-    if (loopCount >= LOOPS_BEFORE_FIN) {
+    if (loopCount >= loopsBeforeFin) {
       router.push("/fin");
       return;
     }
     if (loopCount > 0) {
       fullscreenVideoRef.current?.play();
     }
-  }, [loopCount, router]);
+  }, [loopCount, loopsBeforeFin, router]);
 
   const checkCutByPosition = useCallback(
     (clientX: number, clientY: number) => {

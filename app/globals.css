@@ -280,30 +280,32 @@ body {
   transform: translateY(0);
 }
 
-/* Confetti au clic OUI : montent puis retombent vers le bas */
-@keyframes confetti-burst-up {
+/* Confetti au clic OUI : effet canon (burst depuis le bouton puis chute) */
+@keyframes confetti-cannon {
   0% {
-    transform: translateY(0) translateX(0) scale(0.4) rotate(0deg);
+    transform: translate(0, 0) scale(0.3) rotate(0deg);
     opacity: 1;
   }
-  25% {
-    transform: translateY(-45vh) translateX(var(--drift)) scale(1) rotate(180deg);
+  35% {
+    transform: translate(var(--dx), var(--dy)) scale(1) rotate(180deg);
     opacity: 1;
   }
   100% {
-    transform: translateY(110vh) translateX(var(--drift)) scale(0.7) rotate(720deg);
-    opacity: 0.4;
+    transform: translate(calc(var(--dx) + var(--drift)), calc(var(--dy) + var(--fall))) scale(0.5) rotate(var(--rotation));
+    opacity: 0;
   }
 }
 .confetti-piece {
   position: fixed;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
+  border-radius: 1px;
   pointer-events: none;
-  animation: confetti-burst-up var(--duration) ease-in-out forwards;
-  animation-delay: var(--delay);
   transform-origin: center center;
+  animation-delay: var(--delay);
+}
+.confetti-piece--cannon {
+  width: 8px;
+  height: 8px;
+  animation: confetti-cannon var(--duration) ease-out forwards;
 }
 
 /* Carte Saint-Valentin – fermée = cœurs empilés au centre, ouverte = cœurs sur les côtés, composant agrandi */
@@ -746,4 +748,10 @@ body {
   height: 100%;
   object-fit: contain;
   display: block;
+}
+@media (max-width: 768px) {
+  .envelope-video-fullscreen video {
+    max-width: 88%;
+    max-height: 88%;
+  }
 }

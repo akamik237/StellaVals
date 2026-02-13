@@ -16,31 +16,47 @@ const SOUVENIRS_QUALITES = `Entre les trajets de 45 minutes et les raccompagneme
 const EMOTION = "Tu as pris les droits administrateur sur mon système émotionnel.";
 
 const CONFETTI_COLORS = ["#b30000", "#ff1a1a", "#ff4081", "#ff69b4", "#ffffff", "#ffd700", "#ffe6e6"];
-const CONFETTI_COUNT = 55 * 6;
+const CONFETTI_COUNT = 80;
 
 type ConfettiPiece = {
   id: number;
-  left: number;
-  bottom: number;
+  originX: number;
+  originY: number;
   delay: number;
   duration: number;
+  dx: number;
+  dy: number;
   drift: number;
+  fall: number;
+  rotation: number;
   color: string;
+  size: number;
 };
 
 function generateConfettiPieces(buttonRect: DOMRect): ConfettiPiece[] {
   const cx = buttonRect.left + buttonRect.width / 2;
   const cy = buttonRect.top + buttonRect.height / 2;
-  const bottomOrigin = typeof window !== "undefined" ? window.innerHeight - cy : 0;
-  return Array.from({ length: CONFETTI_COUNT }, (_, i) => ({
-    id: i,
-    left: cx + (Math.random() - 0.5) * 80,
-    bottom: bottomOrigin + (Math.random() - 0.5) * 40,
-    delay: Math.random() * 0.12,
-    duration: 1.3 + Math.random() * 0.7,
-    drift: (Math.random() - 0.5) * 220,
-    color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-  }));
+  return Array.from({ length: CONFETTI_COUNT }, (_, i) => {
+    const angleDeg = -80 + Math.random() * 50;
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const velocity = 70 + Math.random() * 90;
+    const dx = velocity * Math.cos(angleRad);
+    const dy = -velocity * Math.sin(angleRad);
+    return {
+      id: i,
+      originX: cx,
+      originY: cy,
+      delay: Math.random() * 0.08,
+      duration: 1.4 + Math.random() * 0.6,
+      dx,
+      dy,
+      drift: (Math.random() - 0.5) * 120,
+      fall: 120 + Math.random() * 120,
+      rotation: (Math.random() - 0.5) * 1440,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      size: 4 + Math.floor(Math.random() * 4),
+    };
+  });
 }
 
 export default function ValentinePage() {
@@ -73,20 +89,26 @@ export default function ValentinePage() {
 
   return (
     <div className="space-y-6 text-center relative">
-      {/* Confetti overlay au clic OUI */}
+      {/* Confetti cannon burst au clic OUI */}
       {confettiPieces.length > 0 && (
         <div className="fixed inset-0 z-50 pointer-events-none" aria-hidden="true">
           {confettiPieces.map((p) => (
             <div
               key={p.id}
-              className="confetti-piece"
+              className="confetti-piece confetti-piece--cannon"
               style={
                 {
-                  left: `${p.left}px`,
-                  bottom: `${p.bottom}px`,
+                  left: `${p.originX - p.size / 2}px`,
+                  top: `${p.originY - p.size / 2}px`,
+                  width: `${p.size}px`,
+                  height: `${p.size}px`,
                   "--delay": `${p.delay}s`,
                   "--duration": `${p.duration}s`,
+                  "--dx": `${p.dx}px`,
+                  "--dy": `${p.dy}px`,
                   "--drift": `${p.drift}px`,
+                  "--fall": `${p.fall}px`,
+                  "--rotation": `${p.rotation}deg`,
                   background: p.color,
                 } as React.CSSProperties
               }
